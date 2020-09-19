@@ -1,3 +1,7 @@
+#include "JonoProgressLib.jsx"
+#include "JonoSetupLib.jsx"
+#include "JonoUILib.jsx"
+
 String.prototype.hasPrefix = function(str) {
     return this.slice(0, str.length) == str;
 };
@@ -6,6 +10,7 @@ String.prototype.hasSuffix = function(str) {
     return this.slice(-str.length) == str;
 };
 
+// CheckForOpenDocument checks if a document is open and returns it's instance
 function CheckForOpenDocument() {
 	if (app.documents.length == 0) {
 		alert("No document open");
@@ -14,12 +19,18 @@ function CheckForOpenDocument() {
 	return app.activeDocument;
 }
 
+// SetBleed sets the bleed for the document to 3 mm
 function SetBleed(doc) {
-	doc.documentPreferences.documentSlugUniformSize = true;
-	doc.documentPreferences.documentBleedTopOffset = "3 mm";
+
+	var prefs = doc.documentPreferences;
+
+	prefs.documentSlugUniformSize = true;
+	prefs.documentBleedTopOffset = "3 mm";
+
 }
 
-function InstallPresets() {
+// InstallPDFPresets installs the PDF export presets
+function InstallPDFPresets() {
 
 	var assetsPath = new Folder(new File($.fileName).path);
 	var destPath = new Folder(Folder.userData.fsName + "/Adobe/Adobe PDF/Settings");
@@ -35,6 +46,7 @@ function InstallPresets() {
 	
 }
 
+// ExportPDFWithPreset exports the document to PDF using the given preset
 function ExportPDFWithPreset(doc, to, presetName) {
 
 	app.pdfExportPreferences.pageRange = PageRange.ALL_PAGES;
@@ -44,8 +56,28 @@ function ExportPDFWithPreset(doc, to, presetName) {
 
 }
 
+// ExportPNG exports to the document to a non-transparent PNG
+function ExportPNG(doc, to) {
 
-function ExportDrukklaarPDF(doc) {
+	var prefs = app.pngExportPreferences;
+
+	prefs.antiAlias = true;
+	prefs.exportResolution = 72;
+	prefs.exportingSpread = false;
+	prefs.pageString = "1";
+	prefs.pngColorSpace = PNGColorSpaceEnum.RGB;
+	prefs.pngExportRange = PNGExportRangeEnum.EXPORT_RANGE;
+	prefs.pngQuality = PNGQualityEnum.MAXIMUM;
+	prefs.simulateOverprint = true;
+	prefs.transparentBackground = false;
+	prefs.useDocumentBleeds = false;
+
+	doc.exportFile(ExportFormat.PNG_FORMAT, to, false, undefined, "", true);
+
+}
+
+// ExportPrintReadyPDF exports the document to a print-ready PDF
+function ExportPrintReadyPDF(doc) {
 
 	var toPDF = new File(Folder.desktop + "/" + doc.fullName.name.replace(".indd", "_drukklaar.pdf"));
 
@@ -54,7 +86,14 @@ function ExportDrukklaarPDF(doc) {
 
 }
 
-function ExportVoorbeeldPDF(doc) {
+// ExportPreviewdPDF exports the document to a preview PDF
+function ExportPreviewPDF(doc) {
 	var toPDF = new File(Folder.desktop + "/" + doc.fullName.name.replace(".indd", ".pdf"));
 	ExportPDFWithPreset(doc, toPDF, "Jono Voorbeeld PDF");
+}
+
+// ExportPreviewPNG exports the document to a preview PNG
+function ExportPreviewPNG(doc) {
+	var toPNG = new File(Folder.desktop + "/" + doc.fullName.name.replace(".indd", ".png"));
+	ExportPNG(doc, toPNG);
 }

@@ -8,9 +8,13 @@ function Main() {
 		return;
 	}
 
-	ExportDrukklaarPDF(doc);
+	Jono_ProgressBar.create("Export", "Exporting…", 1);
 
-	alert("Export finished");
+	Jono_ProgressBar.updateSubLabel("Exporting print-ready PDF");
+	ExportPrintReadyPDF(doc);
+	Jono_ProgressBar.updateProgressBySteps(1);
+
+	Jono_ProgressBar.close();
 
 }
 
