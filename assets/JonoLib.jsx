@@ -19,6 +19,15 @@ function CheckForOpenDocument() {
 	return app.activeDocument;
 }
 
+// CheckForOpenDocuments checks if any document is open
+function CheckForOpenDocuments() {
+	if (app.documents.length == 0) {
+		alert("No documents open");
+		return false;
+	}
+	return true;
+}
+
 // SetBleed sets the bleed for the document to 3 mm
 function SetBleed(doc) {
 
