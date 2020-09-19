@@ -53,6 +53,7 @@ function ExportPDFWithPreset(doc, to, presetName) {
 
 	var preset = app.pdfExportPresets.itemByName(presetName);
 	doc.exportFile(ExportFormat.PDF_TYPE, to, false, preset, "", true);
+	doc.save();
 
 }
 
@@ -73,6 +74,7 @@ function ExportPNG(doc, to) {
 	prefs.useDocumentBleeds = false;
 
 	doc.exportFile(ExportFormat.PNG_FORMAT, to, false, undefined, "", true);
+	doc.save();
 
 }
 
