@@ -31,10 +31,10 @@ function CheckForOpenDocuments() {
 // SetBleed sets the bleed for the document to 3 mm
 function SetBleed(doc) {
 
-	var prefs = doc.documentPreferences;
+	// var prefs = doc.documentPreferences;
 
-	prefs.documentSlugUniformSize = true;
-	prefs.documentBleedTopOffset = "3 mm";
+	// prefs.documentSlugUniformSize = true;
+	// prefs.documentBleedTopOffset = "3 mm";
 
 }
 
